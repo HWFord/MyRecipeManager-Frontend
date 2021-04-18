@@ -16,30 +16,39 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-12 mt-4">
-          <h3>Recipes added by {{name}}</h3>
+          <div class="col-8 text-left d-inline-block">
+            <h3>Recipes added by {{name}}</h3>
+          </div>
+          <div class="col-4 text-right d-inline-block">
+            <router-link :to="{
+                  name: 'AddRecipe', 
+                  }"
+                >
+                <button type="button" class="btn btn-primary">Add recipe</button>
+            </router-link>
+          </div>
         </div>
 
-        <div class="col-sm-6" 
+        <div class="col-sm-4" 
         v-for="recipe in recipes"
         :key="recipe.id"
         >
           <div class="card mt-4 text-center" >
-            <div class="card-header">
-              <h4 class="card-title lead">{{recipe.title}}</h4>
-            </div>
             <div class="card-body pt-3 ">
-                <h5 class="card-title lead">Recipe n°1</h5>
+              <h4 class="card-title">{{recipe.title}}</h4>
                 <p class="card-text">{{recipe.description}}</p>
-                <router-link :to="{
-                  name: 'Recipe', 
-                  params: {
-                    recipeId:recipe.id,
-                    } 
-                  }"
-                >
-                  See recipe
-                </router-link>
-            </div>
+                <div class="col-12">
+                  <router-link :to="{
+                    name: 'Recipe', 
+                    params: {
+                      recipeId:recipe.id,
+                      } 
+                    }"
+                  ><button type="button" class="btn btn-secondary btn-sm w-100 my-2">See recipe</button>
+                  </router-link>
+                </div>
+                
+              </div>
             <div class="card-footer text-muted">
               {{recipes[0].created}}
             </div>
@@ -69,16 +78,15 @@ export default {
   },
   created() {
     this.getRecipes();
-    console.log();
     this.name = JSON.parse(localStorage.getItem('userData')).name;
   },
   methods: {
     getRecipes() {
       axios.get(`${server.baseURL}/auth/recipe`, this.config)
         .then((response) =>{
-          console.log(response.data);
+          //console.log(response.data);
           this.recipes = response.data;
-          console.log(this.recipes);
+          //console.log(this.recipes);
         })
         //.then(data => (this.recipes = data.data));
         //console.log(this.recipes);

@@ -16,19 +16,16 @@ const routes = [
       },
       {
         path: '/auth/recipes/:recipeId/recipe',
-        //path: '/auth/recipes/:recipe_id',
         name: 'Recipe',
         component: () => import(/* webpackChunkName: "about" */ '../views/Recipe.vue')
       },
       {
-        path: '/auth/recipes/recipe/ingredients',
-        //path: '/auth/recipes/:recipe_id/ingredients/',
+        path: '/auth/recipes/:recipeId/ingredients',
         name: 'Ingredients',
         component: () => import(/* webpackChunkName: "categories" */ '../views/Ingredients.vue')
       },
       {
-        path: '/auth/recipes/recipe/ingredients/ingredient',
-        //path: '/auth/recipes/:recipe_id/ingredients/:ingredient_id',
+        path: '/auth/recipes/:recipeId/ingredients/:ingredientId',
         name: 'Ingredient',
         component: () => import(/* webpackChunkName: "categories" */ '../views/Ingredient.vue')
       },
@@ -46,6 +43,21 @@ const routes = [
         path: '/auth/register',
         name: 'Register',
         component: () => import(/* webpackChunkName: "categories" */ '../views/Register.vue')
+      },
+      {
+        path: '/auth/recipes/addrecipe',
+        name: 'AddRecipe',
+        component: () => import(/* webpackChunkName: "categories" */ '../views/AddRecipe.vue')
+      },
+      {
+        path: '/auth/recipes/addrecipe',
+        name: 'UpdateRecipe',
+        component: () => import(/* webpackChunkName: "categories" */ '../views/UpdateRecipe.vue')
+      },
+      {
+        path: '/auth/recipes/addrecipe',
+        name: 'UpdateIngredient',
+        component: () => import(/* webpackChunkName: "categories" */ '../views/UpdateIngredient.vue')
       }
     ] 
   } 

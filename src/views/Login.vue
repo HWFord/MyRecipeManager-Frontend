@@ -16,7 +16,7 @@
             <button type="button" class="btn btn-primary" @click="login">Login</button>
           </form>
         </div>
-      </div>
+    </div>
   </div>
 </template>
 <script>

@@ -12,8 +12,14 @@
                 </router-link>
               </li>
               <li class="breadcrumb-item">
-                <router-link to="/auth/recipes/recipe">
-                  Recipe
+                <router-link :to="{
+                  name: 'Recipe', 
+                  params: {
+                    recipeId:recipeId,
+                    } 
+                  }"
+                >
+                  {{recipe.title}}
                 </router-link> 
               </li>
               <li class="breadcrumb-item" aria-current="page">Ingredients</li>
@@ -26,14 +32,22 @@
     <div class="container text-left">
       <h4>Ingredients for recipe</h4>
       <div class="row">
-        <div class="col-md-3 col-sm-6">
+        <div class="col-md-3 col-sm-6" 
+          v-for="ingredient in ingredients"
+          :key="ingredient.id">
           <div class="card mt-4 text-center" >
             <div class="card-header">
-              <h4 class="card-title lead">Ingredient name</h4>
+              <h4 class="card-title lead">{{ingredient.name}}</h4>
             </div>
-            <div class="card-body pt-3 ">
-                <p class="card-text">20€</p>
-                <router-link to="/auth/recipes/recipe/ingredients/ingredient">
+            <div class="card-body pt-3">
+                <p class="card-text">{{ingredient.price}}</p>
+                <router-link :to="{
+                  name: 'Ingredient', 
+                  params: {
+                    recipeId:recipeId,
+                    ingredientId:ingredient._id,
+                  } 
+                }">
                   See ingredient
                 </router-link>
             </div>
@@ -44,12 +58,45 @@
   </div>
 </template>
 <script>
+import { server } from "../../helper";
+import axios from "axios";
+
 export default {
   name: "Ingredients",
   data() {
     return {
+      recipeId:'',
       ingredients: [],
+      recipe: {},
+      config:{
+        headers: {
+          'Authorization': 'Bearer '.concat(localStorage.getItem('token'))
+        }
+      }
     };
   },
+  created() {
+    this.recipeId= this.$route.params.recipeId;
+    this.getRecipe();
+    this.getIngredients();
+    this.name = JSON.parse(localStorage.getItem('userData')).name;
+  },
+  methods: {
+    getRecipe(){
+      console.log(this.recipeId);
+       axios.get(`${server.baseURL}/auth/recipe/${this.recipeId}`, this.config)
+        .then((response) =>{
+          this.recipe = response.data;
+          console.log(this.recipe);
+        })
+    },
+    getIngredients() {
+      axios.get(`${server.baseURL}/auth/recipe/${this.recipeId}/ingredients`, this.config)
+        .then((response) =>{
+          this.ingredients = response.data;
+          console.log(this.ingredients);
+        })
+    },
+  }
 };
 </script>

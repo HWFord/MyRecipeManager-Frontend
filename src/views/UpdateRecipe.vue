@@ -1,8 +1,8 @@
 <template>
-  <div id="addRecipe">
+  <div id="updateRecipe">
     <div class="container ">
       <div>
-        <h2>Add a new recipe</h2>
+        <h2>Update </h2>
         <form class="pt-3 text-left">
           <div class="form-group">
             <label for="title">Title</label>
@@ -26,7 +26,7 @@
             <label for="cookingInstructions">Cooking instructions</label>
             <input type="text" class="form-control" id="cookingInstructions" ref="cookingInstructions" placeholder="Enter your cooking instructions here">
           </div>
-          <button type="button" class="btn btn-primary" @click="addRecipe">Add recipe</button>
+          <button type="button" class="btn btn-primary" @click="updateRecipe">Add recipe</button>
         </form>
       </div>
     </div>
@@ -38,7 +38,7 @@ import axios from "axios";
 import { server } from "../../helper";
 
 export default {
-  name: 'AddRecipe',
+  name: 'UpdateRecipe',
   data() {
     return {
       userId:"",
@@ -58,9 +58,9 @@ export default {
     this.userId = JSON.parse(localStorage.getItem('userData')).id;
   },
   methods: {
-    addRecipe: function () {
+    updateRecipe: function () {
         var self = this
-        axios.post(`${server.baseURL}/auth/recipe`, {
+        axios.patch(`${server.baseURL}/auth/recipe`, {
           "title": this.$refs.title.value,
           "description": this.$refs.password.value,
           "timeOfPrepa": this.$refs.timeOfPrepa.value,
@@ -77,7 +77,7 @@ export default {
               }
             };
 
-            axios.post(`${server.baseURL}/auth/recipe`, config)
+            axios.patch(`${server.baseURL}/auth/recipe`, config)
               .then(function (response) {
                   //window.location = "/" // Redirection si la connection est bonne!
                 console.log(response);
