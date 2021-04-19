@@ -62,7 +62,7 @@ export default {
         var self = this
         axios.post(`${server.baseURL}/auth/recipe`, {
           "title": this.$refs.title.value,
-          "description": this.$refs.password.value,
+          "description": this.$refs.description.value,
           "timeOfPrepa": this.$refs.timeOfPrepa.value,
           "difficultyLvl": this.$refs.difficultyLvl.value,
           "cookingInstructions": this.$refs.cookingInstructions.value,
@@ -71,13 +71,7 @@ export default {
           .then(function (response) {
             localStorage.setItem('token', response.data.token)
             localStorage.setItem('userData', JSON.stringify(response.data.user))
-            const config = {
-              headers: {
-                 'Authorization': 'Bearer '.concat(localStorage.getItem('token'))
-              }
-            };
-
-            axios.post(`${server.baseURL}/auth/recipe`, config)
+            axios.post(`${server.baseURL}/auth/recipe`, this.config)
               .then(function (response) {
                   //window.location = "/" // Redirection si la connection est bonne!
                 console.log(response);

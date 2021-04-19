@@ -117,7 +117,7 @@ export default {
         })
     },
     deleteIngredient(){
-        axios.delete(`${server.baseURL}/auth/recipe/${this.recipeId}`, this.config)
+        axios.delete(`${server.baseURL}/auth/recipe/${this.recipeId}/ingredients/${this.ingredientId}`, this.config)
           .then(function (response) {
                   //window.location = "/" // Redirection si la connection est bonne!
             console.log(response);

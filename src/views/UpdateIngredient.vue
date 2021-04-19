@@ -10,9 +10,9 @@
           </div>
           <div class="form-group">
             <label for="description">Price</label>
-            <input type="text" class="form-control" id="description" ref="description" placeholder="Description of the recipe">
+            <input type="number" class="form-control" id="price" ref="price" placeholder="price of ingredient">
           </div>
-          <button type="button" class="btn btn-primary" @click="updateRecipe">Add recipe</button>
+          <button type="button" class="btn btn-primary" @click="updateRecipe">Update recipe</button>
         </form>
       </div>
     </div>
@@ -27,12 +27,9 @@ export default {
   name: 'UpdateRecipe',
   data() {
     return {
-      userId:"",
+      recipeId:"",
       title: "",
-      description:"",
-      timeOfPrepa:"",
-      difficultyLvl:"",
-      cookingInstructions:"",
+      price:"",
       config:{
         headers: {
           'Authorization': 'Bearer '.concat(localStorage.getItem('token'))
@@ -41,18 +38,15 @@ export default {
     };
   },
   created() {
-    this.userId = JSON.parse(localStorage.getItem('userData')).id;
+    this.recipeId = this.$route.params.recipeId;
   },
   methods: {
     updateRecipe: function () {
         var self = this
-        axios.patch(`${server.baseURL}/auth/recipe`, {
+        axios.patch(`${server.baseURL}/auth/recipe/${this.recipeId}/ingredients/${this.ingredientId}`, {
           "title": this.$refs.title.value,
-          "description": this.$refs.password.value,
-          "timeOfPrepa": this.$refs.timeOfPrepa.value,
-          "difficultyLvl": this.$refs.difficultyLvl.value,
-          "cookingInstructions": this.$refs.cookingInstructions.value,
-          "userId": this.userId,
+          "price": this.$refs.price.value,
+          "recipeId": this.recipeId,
         })
           .then(function (response) {
             localStorage.setItem('token', response.data.token)
@@ -63,11 +57,11 @@ export default {
               }
             };
 
-            axios.patch(`${server.baseURL}/auth/recipe`, config)
+            axios.patch(`${server.baseURL}/auth/recipe/${this.recipeId}/ingredients/${this.ingredientId}`, config)
               .then(function (response) {
                   //window.location = "/" // Redirection si la connection est bonne!
                 console.log(response);
-                window.location = `/auth/recipes`;
+                window.location = `${server.baseURL}/auth/recipe/${this.recipeId}/ingredients/${this.ingredientId}`;
               })
               .catch(function (error) {
                 console.log(error);
@@ -75,7 +69,7 @@ export default {
           })
           .catch(function (error) {
             console.log(error);
-            self.error = "Recipe not added"
+            self.error = "Ingredient not updated"
           });
       },
   }

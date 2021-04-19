@@ -81,7 +81,7 @@ export default {
               .then(function (response) {
                   //window.location = "/" // Redirection si la connection est bonne!
                 console.log(response);
-                window.location = `/auth/recipes`;
+                window.location = `${server.baseURL}/auth/recipe/${this.recipeId}`;
               })
               .catch(function (error) {
                 console.log(error);
@@ -89,7 +89,7 @@ export default {
           })
           .catch(function (error) {
             console.log(error);
-            self.error = "Recipe not added"
+            self.error = "Recipe not updated"
           });
       },
   }
