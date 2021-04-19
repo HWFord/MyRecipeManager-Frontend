@@ -43,7 +43,7 @@ export default {
   methods: {
     updateRecipe: function () {
         var self = this
-        axios.patch(`${server.baseURL}/auth/recipe/${this.recipeId}/ingredients/${this.ingredientId}`, {
+        axios.post(`${server.baseURL}/auth/recipe/${this.recipeId}/ingredients/${this.ingredientId}`, {
           "title": this.$refs.title.value,
           "price": this.$refs.password.value,
           "recipeId": this.recipeId,
@@ -52,7 +52,7 @@ export default {
             localStorage.setItem('token', response.data.token)
             localStorage.setItem('userData', JSON.stringify(response.data.user))
 
-            axios.patch(`${server.baseURL}/auth/recipe/${this.recipeId}/ingredients/${this.ingredientId}`, this.config)
+            axios.post(`${server.baseURL}/auth/recipe/${this.recipeId}/ingredients/${this.ingredientId}`, this.config)
               .then(function (response) {
                   //window.location = "/" // Redirection si la connection est bonne!
                 console.log(response);
