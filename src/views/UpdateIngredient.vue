@@ -5,14 +5,18 @@
         <h2>Update Ingredient </h2>
         <form class="pt-3 text-left">
           <div class="form-group">
-            <label for="title">Title</label>
-            <input type="text" class="form-control" id="title" ref="title" placeholder="Title">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" ref="name" placeholder="Name" v-bind:value="ingredient.name">
           </div>
           <div class="form-group">
             <label for="description">Price</label>
-            <input type="number" class="form-control" id="price" ref="price" placeholder="price of ingredient">
+            <input type="number" class="form-control" id="price" ref="price" placeholder="price of ingredient" v-bind:value="ingredient.price">
           </div>
-          <button type="button" class="btn btn-primary" @click="updateRecipe">Update recipe</button>
+          <div class="form-group">
+            <label for="description">description</label>
+            <input type="text" class="form-control" id="price" ref="description" placeholder="price of ingredient" v-bind:value="ingredient.description">
+          </div>
+          <button type="button" class="btn btn-primary" @click="updateIngredient">Update ingredient</button>
         </form>
       </div>
     </div>
@@ -27,9 +31,9 @@ export default {
   name: 'UpdateRecipe',
   data() {
     return {
+      ingredientId: '',
+      ingredient: {},
       recipeId:"",
-      title: "",
-      price:"",
       config:{
         headers: {
           'Authorization': 'Bearer '.concat(localStorage.getItem('token'))
@@ -39,33 +43,37 @@ export default {
   },
   created() {
     this.recipeId = this.$route.params.recipeId;
+    this.ingredientId= this.$route.params.ingredientId;
+    this.getRecipe();
+    this.getIngredient();
   },
   methods: {
-    updateRecipe: function () {
+    getRecipe(){
+      console.log(this.recipeId);
+       axios.get(`${server.baseURL}/auth/recipe/${this.recipeId}`, this.config)
+        .then((response) =>{
+          this.recipe = response.data;
+          console.log(this.recipe);
+        })
+    },
+    getIngredient(){
+       axios.get(`${server.baseURL}/auth/recipe/${this.recipeId}/ingredients/${this.ingredientId}`, this.config)
+        .then((response) =>{
+          this.ingredient = response.data;
+          console.log(this.ingredient);
+        })
+    },
+    updateIngredient: function () {
         var self = this
         axios.patch(`${server.baseURL}/auth/recipe/${this.recipeId}/ingredients/${this.ingredientId}`, {
-          "title": this.$refs.title.value,
+          "name": this.$refs.name.value,
           "price": this.$refs.price.value,
-          "recipeId": this.recipeId,
-        })
-          .then(function (response) {
-            localStorage.setItem('token', response.data.token)
-            localStorage.setItem('userData', JSON.stringify(response.data.user))
-            const config = {
-              headers: {
-                 'Authorization': 'Bearer '.concat(localStorage.getItem('token'))
-              }
-            };
-
-            axios.patch(`${server.baseURL}/auth/recipe/${this.recipeId}/ingredients/${this.ingredientId}`, config)
-              .then(function (response) {
-                  //window.location = "/" // Redirection si la connection est bonne!
-                console.log(response);
-                window.location = `${server.baseURL}/auth/recipe/${this.recipeId}/ingredients/${this.ingredientId}`;
-              })
-              .catch(function (error) {
-                console.log(error);
-              })
+          "description": this.$refs.description.value,
+          "recipeId": self.recipeId,
+        },self.config)
+         .then(function (response) {
+            console.log(response);
+            window.location =`/auth/recipes/${self.recipeId}/ingredients/${self.ingredientId}` ;
           })
           .catch(function (error) {
             console.log(error);

@@ -3,6 +3,7 @@
     <div class="container ">
       <div>
         <h2>Add a new recipe</h2>
+        <p>{{userId}}</p>
         <form class="pt-3 text-left">
           <div class="form-group">
             <label for="title">Title</label>
@@ -55,37 +56,28 @@ export default {
     };
   },
   created() {
-    this.userId = JSON.parse(localStorage.getItem('userData')).id;
+    this.userId = JSON.parse(localStorage.getItem('userData'))._id;
   },
   methods: {
     addRecipe: function () {
         var self = this
-        axios.post(`${server.baseURL}/auth/recipe`, {
+        axios.post(`${server.baseURL}/auth/recipe`,{
           "title": this.$refs.title.value,
           "description": this.$refs.description.value,
           "timeOfPrepa": this.$refs.timeOfPrepa.value,
           "difficultyLvl": this.$refs.difficultyLvl.value,
           "cookingInstructions": this.$refs.cookingInstructions.value,
           "userId": this.userId,
-        })
+        },self.config)
           .then(function (response) {
-            localStorage.setItem('token', response.data.token)
-            localStorage.setItem('userData', JSON.stringify(response.data.user))
-            axios.post(`${server.baseURL}/auth/recipe`, this.config)
-              .then(function (response) {
-                  //window.location = "/" // Redirection si la connection est bonne!
-                console.log(response);
-                window.location = `/auth/recipes`;
+            console.log(response);
+                 window.location ='/auth/recipes' ;
               })
-              .catch(function (error) {
-                console.log(error);
-              })
-          })
           .catch(function (error) {
             console.log(error);
             self.error = "Recipe not added"
           });
-      },
+      }
   }
 }
 </script>

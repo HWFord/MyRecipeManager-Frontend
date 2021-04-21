@@ -50,12 +50,17 @@ const routes = [
         component: () => import(/* webpackChunkName: "categories" */ '../views/AddRecipe.vue')
       },
       {
-        path: '/auth/recipes/addrecipe',
+        path: '/auth/recipes/:recipeId/ingredients/addingredient',
+        name: 'AddIngredient',
+        component: () => import(/* webpackChunkName: "categories" */ '../views/AddIngredient.vue')
+      },
+      {
+        path: '/auth/recipes/:recipeId/updaterecipe',
         name: 'UpdateRecipe',
         component: () => import(/* webpackChunkName: "categories" */ '../views/UpdateRecipe.vue')
       },
       {
-        path: '/auth/recipes/addrecipe',
+        path: '/auth/recipes/:recipeId/Ingredients/:ingredientId',
         name: 'UpdateIngredient',
         component: () => import(/* webpackChunkName: "categories" */ '../views/UpdateIngredient.vue')
       }

@@ -2,17 +2,21 @@
   <div id="AddRecipe">
     <div class="container ">
       <div>
-        <h2>Add Ingredient </h2>
+        <h2>Add Ingredient {{recipeId}} </h2>
         <form class="pt-3 text-left">
           <div class="form-group">
-            <label for="title">Title</label>
-            <input type="text" class="form-control" id="title" ref="title" placeholder="Title">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" ref="name" placeholder="Name">
           </div>
           <div class="form-group">
-            <label for="description">Price</label>
+            <label for="price">Price</label>
             <input type="number" class="form-control" id="price" ref="price" placeholder="price of ingredient">
           </div>
-          <button type="button" class="btn btn-primary" @click="updateRecipe">Update ingredient</button>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" class="form-control" id="price" ref="description" placeholder="description">
+          </div>
+          <button type="button" class="btn btn-primary" @click="addIngredient">Add ingredient</button>
         </form>
       </div>
     </div>
@@ -27,9 +31,10 @@ export default {
   name: 'AddRecipe',
   data() {
     return {
-      recipeIdId:"",
-      title: "",
+      recipeId:"",
+      name: "",
       price:"",
+      decription:"",
       config:{
         headers: {
           'Authorization': 'Bearer '.concat(localStorage.getItem('token'))
@@ -41,30 +46,21 @@ export default {
     this.recipeId = this.$route.params.recipeId;
   },
   methods: {
-    updateRecipe: function () {
+    addIngredient: function () {
         var self = this
-        axios.post(`${server.baseURL}/auth/recipe/${this.recipeId}/ingredients/${this.ingredientId}`, {
-          "title": this.$refs.title.value,
-          "price": this.$refs.password.value,
-          "recipeId": this.recipeId,
-        })
+        axios.post(`${server.baseURL}/auth/recipe/${self.recipeId}/ingredients`, {
+          "name": self.$refs.name.value,
+          "price": self.$refs.price.value,
+          "description": self.$refs.description.value,
+          "owner": self.recipeId,
+        },self.config)
           .then(function (response) {
-            localStorage.setItem('token', response.data.token)
-            localStorage.setItem('userData', JSON.stringify(response.data.user))
-
-            axios.post(`${server.baseURL}/auth/recipe/${this.recipeId}/ingredients/${this.ingredientId}`, this.config)
-              .then(function (response) {
-                  //window.location = "/" // Redirection si la connection est bonne!
-                console.log(response);
-                window.location = `${server.baseURL}/auth/recipe/${this.recipeId}/ingredients/${this.ingredientId}`;
+            console.log(response);
+                window.location =`/auth/recipes/${self.recipeId}/ingredients` ;
               })
-              .catch(function (error) {
-                console.log(error);
-              })
-          })
           .catch(function (error) {
             console.log(error);
-            self.error = "Ingredient not updated"
+            self.error = "Ingredient not added"
           });
       },
   }

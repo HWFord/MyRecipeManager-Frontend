@@ -33,7 +33,7 @@
                   Ingredients
                 </router-link> 
               </li>
-              <li class="breadcrumb-item" aria-current="page">{{ingredient.title}}</li>
+              <li class="breadcrumb-item" aria-current="page">{{ingredient.name}}</li>
             </ol>
           </nav>
         </div>
@@ -45,14 +45,14 @@
         <div class="col-sm-12 text-left">
           <div class="row">
           <div class="col-8">
-            <h4>{{ingredient.title}}</h4>
+            <h4>{{ingredient.name}}</h4>
           </div>
           <div class="col-2">
               <router-link :to="{
                 name: 'UpdateIngredient', 
                 params: {
                   recipeId:recipeId,
-                  ingredientId:ingredient._id,
+                  ingredientId:ingredientId,
                 } 
               }">
                 <button type="button" class="btn btn-secondary btn-sm w-100">Update Ingredient</button>

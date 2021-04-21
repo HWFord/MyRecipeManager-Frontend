@@ -30,7 +30,21 @@
     </div>
 
     <div class="container text-left">
-      <h4>Ingredients for recipe</h4>
+      <div class="row">
+        <div class="col-sm-12 mt-4">
+          <div class="col-8 text-left d-inline-block">
+            <h3>Ingredients for {{recipe.title}}</h3>
+          </div>
+          <div class="col-4 text-right d-inline-block">
+            <router-link :to="{
+                  name: 'AddIngredient', 
+                  }"
+                >
+                <button type="button" class="btn btn-primary">Add ingredient</button>
+            </router-link>
+          </div>
+        </div>
+      </div>
       <div class="row">
         <div class="col-md-3 col-sm-6" 
           v-for="ingredient in ingredients"
