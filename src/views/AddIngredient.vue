@@ -52,7 +52,7 @@ export default {
           "name": self.$refs.name.value,
           "price": self.$refs.price.value,
           "description": self.$refs.description.value,
-          "owner": self.recipeId,
+          "owner": self.recipeId
         },self.config)
           .then(function (response) {
             console.log(response);

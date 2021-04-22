@@ -67,7 +67,7 @@ export default {
           "timeOfPrepa": this.$refs.timeOfPrepa.value,
           "difficultyLvl": this.$refs.difficultyLvl.value,
           "cookingInstructions": this.$refs.cookingInstructions.value,
-          "userId": this.userId,
+          "owner": this.userId
         },self.config)
           .then(function (response) {
             console.log(response);

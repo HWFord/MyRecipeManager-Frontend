@@ -69,7 +69,7 @@ export default {
           "name": this.$refs.name.value,
           "price": this.$refs.price.value,
           "description": this.$refs.description.value,
-          "recipeId": self.recipeId,
+          "recipeId": self.recipeId
         },self.config)
          .then(function (response) {
             console.log(response);

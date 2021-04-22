@@ -28,11 +28,12 @@
             </router-link>
           </div>
         </div>
-
-        <div class="col-sm-4" 
+        <div 
         v-for="recipe in recipes"
         :key="recipe.id"
         >
+          <div v-if="userId == recipe.owner">
+          <div class="">
           <div class="card mt-4 text-center" >
             <div class="card-body pt-3 ">
               <h4 class="card-title">{{recipe.title}}</h4>
@@ -44,14 +45,19 @@
                       recipeId:recipe.id,
                       } 
                     }"
-                  ><button type="button" class="btn btn-secondary btn-sm w-100 my-2">See recipe</button>
+                  >
+                    <button type="button" class="btn btn-secondary btn-sm w-100 my-2">See recipe</button>
                   </router-link>
                 </div>
-                
               </div>
             <div class="card-footer text-muted">
               {{recipes[0].created}}
             </div>
+          </div>
+          </div>
+           </div>
+          <div v-else  style="display:none;"> 
+           
           </div>
         </div>
 
@@ -67,6 +73,8 @@ export default {
   name: "Recipes",
   data() {
     return {
+      userId:'',
+      recipeId:'',
       recipes: [],
       name:'',
       config:{
@@ -77,8 +85,11 @@ export default {
     };
   },
   created() {
+    this.userId = JSON.parse(localStorage.getItem('userData'))._id;
+    this.recipeId= this.$route.params.recipeId;
     this.getRecipes();
     this.name = JSON.parse(localStorage.getItem('userData')).name;
+
   },
   methods: {
     getRecipes() {
@@ -86,6 +97,7 @@ export default {
         .then((response) =>{
           //console.log(response.data);
           this.recipes = response.data;
+              console.log(this.recipes);
           //console.log(this.recipes);
         })
         //.then(data => (this.recipes = data.data));
